@@ -3,7 +3,7 @@ use blog_platform;
 
 create table users (
     user_id int primary key auto_increment,
-    username varchar(50) unique,
+    username varchar(50),
     display_name varchar(50),
     creation_date datetime
 );
@@ -34,3 +34,4 @@ create table comments
     foreign key (post_id) references posts (post_id),
     foreign key (author_id) references users (user_id)
 );
+
