@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/Non-optimized query.sql" value="a0390d22-ced3-43bc-960c-5fe2038b3a25" />
+    <file url="file://$PROJECT_DIR$/Optimized query.sql" value="a0390d22-ced3-43bc-960c-5fe2038b3a25" />
     <file url="file://$PROJECT_DIR$/tables.sql" value="a0390d22-ced3-43bc-960c-5fe2038b3a25" />
   </component>
 </project>

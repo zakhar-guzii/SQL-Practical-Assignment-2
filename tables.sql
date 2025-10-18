@@ -35,3 +35,6 @@ create table comments
     foreign key (author_id) references users (user_id)
 );
 
+SELECT COUNT(*) FROM users;
+SELECT COUNT(*) FROM posts;
+SELECT COUNT(*) FROM comments;
