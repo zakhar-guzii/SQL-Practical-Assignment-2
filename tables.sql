@@ -1,25 +1,27 @@
 create database blog_platform;
 use blog_platform;
 
-create table users (
-    user_id int primary key auto_increment,
-    username varchar(50),
-    display_name varchar(50),
+create table users
+(
+    user_id       int primary key auto_increment,
+    username      varchar(50),
+    display_name  varchar(50),
     creation_date datetime
 );
 
-create table posts (
-    post_id int primary key auto_increment,
-    title varchar(255),
-    category enum(
+create table posts
+(
+    post_id      int primary key auto_increment,
+    title        varchar(255),
+    category     enum (
         'technology', 'business-startups', 'education', 'science', 'culture', 'travel',
         'health-sport', 'food-recipes', 'lifestyle', 'art', 'design', 'marketing',
         'programming', 'movies-series', 'music', 'economics', 'politics', 'ecology',
         'psychology', 'history', 'social-media', 'games', 'books', 'analytics', 'interviews'
-    ),
-    author_id int,
+        ),
+    author_id    int,
     published_at datetime,
-    foreign key (author_id) references users(user_id)
+    foreign key (author_id) references users (user_id)
 );
 
 create table comments
@@ -34,6 +36,11 @@ create table comments
     foreign key (author_id) references users (user_id)
 );
 
-SELECT COUNT(*) FROM users;
-SELECT COUNT(*) FROM posts;
-SELECT COUNT(*) FROM comments;
+select count(*)
+from users;
+
+select count(*)
+from posts;
+
+select count(*)
+from comments;
