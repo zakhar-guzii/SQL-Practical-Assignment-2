@@ -19,7 +19,6 @@ create table posts (
     ),
     author_id int,
     published_at datetime,
-    comments_count int,
     foreign key (author_id) references users(user_id)
 );
 
