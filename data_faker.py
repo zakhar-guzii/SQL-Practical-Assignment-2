@@ -53,14 +53,13 @@ def generate_post(user_ids):
     category_choice = random.choice(categories)
     author_id = random.choice(user_ids)
     published_at = fake.date_between(start_date="-5y", end_date="now")
-    comments_count = random.randint(0, 50)
-    return title, category_choice, author_id, published_at, comments_count
+    return title, category_choice, author_id, published_at
 
 
 def insert_posts(user_ids, n, batch_size = 100000):
     sql = """
-          insert into posts (title, category, author_id, published_at, comments_count)
-          values (%s, %s, %s, %s, %s)"""
+          insert into posts (title, category, author_id, published_at)
+          values (%s, %s, %s, %s)"""
     to_insert = []
     inserted = 0
     for _ in range(n):
@@ -82,34 +81,35 @@ insert_posts(users_ids, 1000000)
 
 
 def generate_comment(post_id, author_id):
-    is_approved = fake.boolean()
+    is_approved = random.random() < 0.9
     created_at = fake.date_between(start_date="-5y", end_date="now")
     comments_text = fake.sentence()[:1000]
     return post_id, author_id, created_at, is_approved, comments_text
 
 
-def insert_comments(post_ids, user_ids, n_per_post, batch_size = 100000):
+def insert_comments(post_ids, user_ids, batch_size = 100000):
     sql = """
           insert into comments (post_id, author_id, created_at, is_approved, comments_text)
           values (%s, %s, %s, %s, %s)"""
     to_insert = []
     inserted = 0
     for post_id in post_ids:
-        for _ in range(n_per_post):
+        num_comments_for_this_post = random.randint(1, 7)
+        for _ in range(num_comments_for_this_post):
             to_insert.append(generate_comment(post_id, random.choice(user_ids)))
             if len(to_insert) >= batch_size:
                 cursor.executemany(sql, to_insert)
                 conn.commit()
                 inserted += len(to_insert)
                 to_insert = []
-        if to_insert:
-            cursor.executemany(sql, to_insert)
-            conn.commit()
-            inserted += len(to_insert)
+    if to_insert:
+        cursor.executemany(sql, to_insert)
+        conn.commit()
+        inserted += len(to_insert)
 
 
 cursor.execute("SELECT post_id FROM posts")
 post_ids = [r[0] for r in cursor.fetchall()]
-insert_comments(post_ids, users_ids, n_per_post=random.randint(1, 2))
+insert_comments(post_ids, users_ids)
 cursor.close()
 conn.close()
