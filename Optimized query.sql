@@ -3,12 +3,14 @@ use blog_platform;
 create index idx_posts_published_at on posts (published_at);
 create index idx_posts_category_published_at on posts (category, published_at);
 create index idx_posts_author_category_published on posts (author_id, category, published_at);
+create index idx_comments_post_id on comments (post_id);
 
 
+EXPLAIN ANALYZE
 with post_comments as (select p.post_id,
                               count(c.comment_id) as comment_count
-                       from posts p
-                                left join comments c on c.post_id = p.post_id
+                       from posts p use index (idx_posts_published_at)
+                                left join comments c use index (idx_comments_post_id) on c.post_id = p.post_id
                        where p.published_at >= '2024-01-01'
                          and p.published_at < '2026-01-01'
                        group by p.post_id),

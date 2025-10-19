@@ -1,5 +1,5 @@
 use blog_platform;
-
+explain
 select p_main.category,
 
        (select count(*)
